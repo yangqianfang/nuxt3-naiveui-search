@@ -1,9 +1,12 @@
 <template>
   <div class="search-box">
     <!-- 搜索栏start -->
+
     <div class="content">
-      <div class="select">
-        <!-- <div class="view" @mouseenter="showSeachEngine(true)" @mouseleave="showSeachEngine(false)"
+      <n-time :time="time" class="time" format="HH:mm:ss" />
+      <div class="search-box">
+        <div class="select">
+          <!-- <div class="view" @mouseenter="showSeachEngine(true)" @mouseleave="showSeachEngine(false)"
           >百度</div
         >
         <ul v-show="showEngin" class="ul" @mouseleave="showSeachEngine(false)">
@@ -14,36 +17,64 @@
           <li class="baidu_s">百 度</li>
           <li class="ff_s">F 搜</li>
         </ul> -->
-        <NDropdown :options="options" placement="bottom-start" @select="handleSelect">
-          <!-- <NButton class="dropButton">Dropdown</NButton> -->
-          <div class="view">{{ platform.label }}</div>
-        </NDropdown>
-      </div>
-      <div class="search">
-        <NAutoComplete
-          v-model:value="keyWord"
-          clearable
-          size="large"
-          :input-props="{
-            autocomplete: 'disabled'
-          }"
-          :options="searchList"
-          placeholder="关键词"
-          @select="onAutoCompleteSelect"
-        />
-      </div>
-      <NButton class="buttton" color="#264ff8" type="info" @click="onSubmit">搜 索</NButton>
+          <NDropdown
+            :options="options"
+            class="dropdown"
+            width="80"
+            placement="bottom-start"
+            @select="handleSelect"
+          >
+            <div class="view">{{ platform.label }}</div>
+          </NDropdown>
+        </div>
+        <div class="search">
+          <NAutoComplete
+            ref="searchinput"
+            v-model:value="keyWord"
+            clearable
+            size="large"
+            :input-props="{
+              autocomplete: 'disabled'
+            }"
+            :options="searchList"
+            placeholder="关键词"
+            @select="onAutoCompleteSelect"
+          />
+        </div>
+        <NButton class="buttton" color="#3d63fe" type="info" @click="onSubmit">
+          <template #icon>
+            <n-icon>
+              <Search />
+            </n-icon> </template
+          >搜 索</NButton
+        >
 
-      <!-- 搜索栏end -->
+        <!-- 搜索栏end -->
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-  import { NButton, NDropdown, NAutoComplete } from 'naive-ui'
+  import { NButton, NDropdown, NAutoComplete, NTime, NIcon } from 'naive-ui'
+  import { Search } from '@vicons/ionicons5'
+
   import fetchJsonp from 'fetch-jsonp'
+
   /* ✓ GOOD */
+  const time = ref(new Date())
   const keyWord = ref('')
   const searchList = ref([])
+  const searchinput = ref(null)
+  onMounted(() => {
+    showTime()
+  })
+
+  function showTime() {
+    setInterval(() => {
+      time.value = new Date()
+    }, 1000)
+  }
+
   const options = [
     {
       label: '百度',
@@ -117,6 +148,10 @@
 
   // 点击搜索按钮
   function onSubmit() {
+    if (!keyWord.value) {
+      searchinput.value.focus()
+      return
+    }
     openUrl(keyWord.value)
   }
 </script>
@@ -124,7 +159,6 @@
   .search-box {
     display: flex;
     .content {
-      justify-content: center;
       width: 100%;
       height: 110px;
       margin: 0 auto;
@@ -133,6 +167,22 @@
       z-index: 1;
       display: flex;
       height: 48px;
+      align-items: center;
+      flex-direction: column;
+      :deep(.time) {
+        font-size: 36px;
+        color: #fff;
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+        font-family: 'Microsoft Yahei Light';
+        cursor: pointer;
+        transition: 0.25s;
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+      .search-box {
+        margin-top: 10px;
+      }
       .keylist {
         width: 100%;
         padding: 0;
@@ -152,15 +202,15 @@
       .select {
         position: relative;
         height: 48px;
-        .dropButton {
-          border: 0;
-          height: 48px;
-        }
+        border-radius: 3px 0 0 3px;
+        overflow: hidden;
+
         .view {
           background: rgba(255, 255, 255, 0.9);
           height: 48px;
           color: #317ef3;
           width: 80px;
+          font-size: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -189,6 +239,7 @@
       .search {
         position: relative;
         height: 100%;
+        width: 350px;
         height: 48px;
         .keyword {
           outline: 0;
@@ -224,6 +275,9 @@
         outline: none;
         height: 48px;
         border: none;
+      }
+      :deep(.n-button) {
+        border-radius: 0 3px 3px 0;
       }
     }
   }
