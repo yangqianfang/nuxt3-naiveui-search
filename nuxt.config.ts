@@ -7,12 +7,6 @@ export default defineNuxtConfig({
     'normalize.css',
     '@/assets/css/global.less'
   ],
-  // plugins: [
-  //   {
-  //     src: 'fetch-jsonp',
-  //     ssr: false
-  //   }
-  // ],
   build: {
     transpile:
       process.env.NODE_ENV === 'production'
