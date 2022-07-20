@@ -160,13 +160,10 @@
     display: flex;
     .content {
       width: 100%;
-      height: 110px;
       margin: 0 auto;
       background: none;
-      padding-top: 90px;
       z-index: 1;
       display: flex;
-      height: 48px;
       align-items: center;
       flex-direction: column;
       :deep(.time) {
