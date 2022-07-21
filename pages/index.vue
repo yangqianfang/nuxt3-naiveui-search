@@ -30,7 +30,9 @@
 </template>
 <script setup>
   import { NTabs, NTabPane } from 'naive-ui'
-  import { iconsData } from '@/utils/index'
+  import { getLogoData } from '@/utils/index'
+
+  const iconsData = getLogoData()
   /* ✓ GOOD */
 </script>
 <style lang="less" scoped>
