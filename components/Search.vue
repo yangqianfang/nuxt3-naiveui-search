@@ -76,11 +76,7 @@
       time.value = new Date()
     }, 1000)
   }
-  const renderIcon = (icon: Component) => {
-    return () => {
-      return h('img', { src: icon, width: 20, height: 20, style: { position: 'absolute' } })
-    }
-  }
+
   const searchLogo = [
     '/assets/images/logo/baidu.png',
     '/assets/images/logo/google.png',
@@ -140,7 +136,9 @@
   ]
   const platform = ref(options[0])
 
-  // 监控关键词
+  /* 
+  监控关键词 
+  */
   watch(keyWord, () => {
     getList()
   })
@@ -149,6 +147,7 @@
   获取关键词列表 使用jsonp
   jsonp 必须封装到方法里，如果放到watch里面直接执行，由于是服务端渲染，会报找不到window对象的错误
   */
+
   async function getList() {
     try {
       const response = await fetchJsonp(
@@ -171,9 +170,6 @@
       searchList.value = N
     } catch (error) {}
   }
-
-  // const { data, refresh } = await useFetch('/api/user')
-  // console.log(data, 666)
 
   // 搜索平台选择
   const handleSelect = (value, item) => {
