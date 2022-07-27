@@ -20,11 +20,13 @@
           <NDropdown
             :options="options"
             class="dropdown"
-            width="80"
+            width="90"
             placement="bottom-start"
             @select="handleSelect"
           >
-            <div class="view">{{ platform.label }}</div>
+            <div class="view"
+              ><img :src="searchLogo[platform.key]" class="logo" />{{ platform.label }}</div
+            >
           </NDropdown>
         </div>
         <div class="search">
@@ -74,22 +76,66 @@
       time.value = new Date()
     }, 1000)
   }
+  const renderIcon = (icon: Component) => {
+    return () => {
+      return h('img', { src: icon, width: 20, height: 20, style: { position: 'absolute' } })
+    }
+  }
+  const searchLogo = [
+    '/assets/images/logo/baidu.png',
+    '/assets/images/logo/google.png',
+    '/assets/images/logo/bing.png',
+    '/assets/images/logo/f.png'
+  ]
 
   const options = [
     {
       label: '百度',
-      key: '1',
-      url: 'https://www.baidu.com/s?wd='
+      key: 0,
+      url: 'https://www.baidu.com/s?wd=',
+      icon: () =>
+        h('img', {
+          src: searchLogo[0],
+          width: 20,
+          height: 20,
+          style: { position: 'absolute' }
+        })
+    },
+    {
+      label: 'Goole',
+      key: 1,
+      url: 'https://www.google.com/search?q=',
+      icon: () =>
+        h('img', {
+          src: searchLogo[1],
+          width: 20,
+          height: 20,
+          style: { position: 'absolute' }
+        })
     },
     {
       label: '必应',
       url: 'https://cn.bing.com/search?q=',
-      key: '3'
+      key: 2,
+      icon: () =>
+        h('img', {
+          src: searchLogo[2],
+          width: 20,
+          height: 20,
+          style: { position: 'absolute' }
+        })
     },
     {
       label: 'F 搜',
       url: 'https://fsoufsou.com/search?q=',
-      key: '4'
+      key: 3,
+      icon: () =>
+        h('img', {
+          src: searchLogo[3],
+          width: 20,
+          height: 20,
+          style: { position: 'absolute' }
+        })
     }
   ]
   const platform = ref(options[0])
@@ -206,11 +252,17 @@
           background: rgba(255, 255, 255, 0.9);
           height: 48px;
           color: #317ef3;
-          width: 80px;
+          width: 90px;
           font-size: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
+
+          .logo {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+          }
         }
         .ul {
           position: absolute;
